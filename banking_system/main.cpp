@@ -1,15 +1,20 @@
-#include<accountClass.h>
+#include "accountClass.hpp"
 #include<iostream>
+#include<fstream>
+#include<stdlib.h>
 
+
+using namespace std;
+using namespace bank;
 /**
   function declaration
 **/
 void write_account(); //function to write record in a binary file
-void display_account_details(int); //function to display account details
-void modify_account_details(int); //function to modify account details
-void delete_account(int); //function to delete account
+void display_account_details(int account_no); //function to display account details
+void modify_account_details(int account_no); //function to modify account details
+void delete_account(int account_no); //function to delete account
 void display_all(); //function to display account details
-void deposit_withdraw(int, int); //function to deposit/withdraw
+void deposit_withdraw(int account_no, int choice); //function to deposit/withdraw
 void intro(); //introductory screen function
 
 /**
@@ -68,9 +73,9 @@ int main(){
           modify_account_details(num); //withdraw amount given by num
           break;
       case '8':
-          cout<<"\n\nThank you for using the banking system."
+          cout<<"\n\nThank you for using the banking system.";
           break;
-      default: cout<<"\a"
+      default: cout<<"\a";
     }
     cin.ignore();
     cin.get();
@@ -82,5 +87,185 @@ int main(){
 **/
 void write_account(){
   account ac;
-  
+  ofstream outFile;
+  outFile.open("account.dat", ios::binary|ios::app);
+  ac.create_account();
+  outFile.write(reinterpret_cast<char *> (&ac), sizeof(account));
+  outFile.close();
+}
+/**
+  function to read specific record from file
+**/
+void display_account_details(int account_no){
+  account ac;
+  bool flag = false;
+  ifstream inFile;
+  inFile.open("account.dat", ios::binary);
+  if (!inFile){
+    cout<<"\n\nFile could not be opened. Press any key to exit"<<endl;
+    return;
+  }
+  cout<<"\n\nBalance Details"<<endl;
+  while(inFile.read(reinterpret_cast<char *> (&ac), sizeof(account))){
+    if (ac.return_account_no() == account_no){
+      ac.show_account();
+      flag = true;
+    }
+  }
+  inFile.close();
+  if (flag == false){
+    cout<<"\n\nAccount details does not exist"<<endl;
+  }
+}
+/**
+  function to modify record of file
+**/
+void modify_account_details(int account_no){
+  account ac;
+  bool found = false;
+  fstream File;
+  File.open("account.dat", ios::binary|ios::in|ios::out);
+  if (!File){
+    cout<<"\n\nFile could not be opened. Press any key to exit"<<endl;
+    return;
+  }
+
+  while(!File.eof() && found == false)
+  {
+    File.read(reinterpret_cast<char *> (&ac), sizeof(account));
+    if(ac.return_account_no() == account_no)
+    {
+      ac.show_account();
+      cout<<"\n\nEnter new account details"<<endl;
+      ac.modify_account();
+      int pos = (-1)*static_cast<int>(sizeof(account));
+      File.seekp(pos, ios::cur);
+      File.write(reinterpret_cast<char *> (&ac), sizeof(account));
+      cout<<"\n\nAccount details updated"<<endl;
+      found = true;
+    }
+  }
+  File.close();
+  if (found == false){
+    cout<<"\n\nAccount details does not exist"<<endl;
+  }
+}
+/**
+  function to delete record of file
+**/
+void delete_account(int account_no){
+  account ac;
+  bool found = false;
+  ifstream inFile;
+  ofstream outFile;
+  inFile.open("account.dat", ios::binary);
+
+  if (!inFile){
+    cout<<"\n\nFile could not be opened. Press any key to exit"<<endl;
+    return;
+  }
+  outFile.open("temp.dat", ios::binary);
+  inFile.seekg(0, ios::beg);
+  while(inFile.read(reinterpret_cast<char *> (&ac), sizeof(account)))
+  {
+    if (ac.return_account_no() != account_no)
+    {
+      outFile.write(reinterpret_cast<char *> (&ac), sizeof(account));
+    }
+  }
+  inFile.close();
+  outFile.close();
+  remove("account.dat");
+  rename("temp.dat", "account.dat");
+  cout<<"Account deleted"<<endl;
+}
+
+/**
+  function to display all account list
+**/
+void display_all(){
+  account ac;
+  ifstream inFile;
+  inFile.open("account.dat", ios::binary);
+  if (!inFile){
+    cout<<"\n\nFile could not be opened. Press any key to exit"<<endl;
+    return;
+  }
+  cout<<"\n\n\t\tACCOUNT HOLDER LIST\n\n";
+	cout<<"====================================================\n";
+	cout<<"A/c no.      NAME           Type  Balance\n";
+	cout<<"====================================================\n";
+  while(inFile.read(reinterpret_cast<char *> (&ac), sizeof(account)))
+  {
+    ac.report();
+  }
+  inFile.close();
+}
+
+/**
+  function to deposit and withdraw amount
+**/
+void deposit_withdraw(int account_no, int choice){
+  account ac;
+  fstream File;
+  int amount;
+  bool found = false;
+  File.open("account.dat", ios::binary|ios::in|ios::out);
+
+  if (!File){
+    cout<<"\n\nFile could not be opened. Press any key to exit"<<endl;
+    return;
+  }
+
+
+
+  while(!File.eof() && found == false)
+  {
+    File.read(reinterpret_cast<char *> (&ac), sizeof(account));
+    if (ac.return_account_no() == account_no){
+      ac.show_account();
+
+      if (choice == 1){
+          cout<<"\n\n\tTO DEPOSITE AMOUNT ";
+          cout<<"\n\nEnter amount to be deposited"<<endl;
+          cin>>amount;
+          ac.deposit_amount(amount);
+      }
+
+      else if (choice == 2){
+          cout<<"\n\n\tTO WITHDRAW AMOUNT ";
+          cout<<"\n\nEnter amount to withdraw"<<endl;
+          cin>>amount;
+          int bal = ac.return_deposit_amount() - amount;
+          if (bal < 500 && ac.return_account_type() == 'S'){
+            cout<<"\n\nCannot process request. Insufficient balance"<<endl;
+          }
+          else if (amount < ac.return_deposit_amount()){
+            ac.draw_amount(amount);
+          }
+
+      }
+      int pos = (-1)*static_cast<int>(sizeof(account));
+      File.seekp(pos, ios::cur);
+      File.write(reinterpret_cast<char *> (&ac), sizeof(account));
+      cout<<"\n\nAccount details updated"<<endl;
+      found = true;
+    }
+  }
+  File.close();
+  if (found == false){
+    cout<<"\n\nAccount details does not exist"<<endl;
+  }
+}
+
+/**
+  introduction function
+**/
+
+void intro(){
+  cout<<"\n\n\n\t  BANK";
+	cout<<"\n\n\tMANAGEMENT";
+	cout<<"\n\n\t  SYSTEM";
+  cout<<"\n\n\t reference: http://www.cppforschool.com/project/banking-system-project.html"<<endl;
+  cin.get();
 }

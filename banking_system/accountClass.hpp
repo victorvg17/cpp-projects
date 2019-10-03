@@ -2,6 +2,7 @@
 #include<fstream>
 #include<iomanip>
 
+namespace bank{
 using namespace std;
 
 /**
@@ -24,3 +25,5 @@ public:
   int return_deposit_amount() const;  //to return current amount in deposit
   char return_account_type() const; //return type of account
 };
+
+} //namespace bank

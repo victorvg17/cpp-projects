@@ -1,4 +1,6 @@
-#include<accountClass.h>
+#include "accountClass.hpp"
+
+namespace bank{
 
 using namespace std;
 
@@ -13,13 +15,13 @@ void account::create_account(){
   account_type = toupper(account_type);
   cout<<"Enter the initial deposit"<<endl;
   cin>>deposit;
-  cout<<"Account:"<<account_no<<" created"<<endl;
+  cout<<"Account:"<<account_no<<" created."<<endl;
 }
 
 void account::show_account() const{
   cout<<"\nAccount number: "<<account_no<<endl;
   cout<<"\n Account holder name: "<<endl;
-  cout<<account_name
+  cout<<account_name;
   cout<<"\n Account type: "<<account_type<<endl;
   cout<<"\n Account balance: "<<deposit<<endl;
 }
@@ -59,3 +61,5 @@ int account::return_deposit_amount() const{
 char account::return_account_type() const{
   return account_type;
 }
+
+} //namespace bank

@@ -12,11 +12,11 @@ namespace reportCard{
     char name[20];
     int p_mark, c_mark, m_mark, e_mark, cs_mark;
     double percentage;
-    char grade[6];
+    char grade;
     void calculate();
 
   public:
-    void getdata();
+    void get_data();
     void show_data() const;
     void show_tabular() const;
     int ret_roll_number() const;

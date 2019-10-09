@@ -28,22 +28,24 @@ namespace reportCard{
     }
   }
 
-  void student::getdata(){
-    cout<<"\nEnter student roll no: \n"<<endl;
+  void student::get_data(){
+    cout<<"\nEnter student roll no: "<<endl;
     cin>>roll_no;
     cout<<"\nEnter student name : \n"<<endl;
     // cin>>name;
-    cin.get(name, 20);
-    cout<<"\nEnter marks in physics out of 100: \n"<<endl;
+    cin.ignore();
+    cin.getline(name, 20);
+    cout<<"\nEnter marks in physics out of 100: "<<endl;
     cin>>p_mark;
-    cout<<"\nEnter marks in chemistry out of 100: \n"<<endl;
+    cout<<"\nEnter marks in chemistry out of 100: "<<endl;
     cin>>c_mark;
-    cout<<"\nEnter marks in mathematics out of 100: \n"<<endl;
+    cout<<"\nEnter marks in mathematics out of 100: "<<endl;
     cin>>m_mark;
-    cout<<"\nEnter marks in english out of 100: \n"<<endl;
+    cout<<"\nEnter marks in english out of 100: "<<endl;
     cin>>e_mark;
-    cout<<"\nEnter marks in computer science out of 100: \n"<<endl;
+    cout<<"\nEnter marks in computer science out of 100: "<<endl;
     cin>>cs_mark;
+    calculate();
   }
 
   void student::show_data() const{
@@ -59,7 +61,7 @@ namespace reportCard{
   }
 
   void student::show_tabular() const{
-    cout<<roll_no<<setw(6)<<" "<<name<<setw(10)<<p_mark<<setw(5)<<c_mark<<setw(5)<<m_mark<<setw(5)<<e_mark<<setw(5)<<cs_mark<<setw(8)<<percentage<<setw(5)<<grade<<endl;
+    cout<<roll_no<<setw(10)<<" "<<name<<setw(10)<<p_mark<<setw(12)<<c_mark<<setw(12)<<m_mark<<setw(12)<<e_mark<<setw(17)<<cs_mark<<setw(13)<<percentage<<setw(13)<<grade<<endl;
   }
 
   int student::ret_roll_number() const{

@@ -9,10 +9,10 @@ namespace reportCard{
   **/
   class student{
     int roll_no;
-    char name[50];
+    char name[20];
     int p_mark, c_mark, m_mark, e_mark, cs_mark;
     double percentage;
-    char grade;
+    char grade[6];
     void calculate();
 
   public:

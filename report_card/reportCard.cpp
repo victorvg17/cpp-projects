@@ -1,4 +1,4 @@
-#include "report_card.hpp"
+#include "reportCard.hpp"
 
 
 namespace reportCard{
@@ -7,24 +7,24 @@ namespace reportCard{
   reportCard class used in project
   **/
   void student::calculate(){
-    percentage = (p_mark + c_mark + m_mark + e_mark + cs_mark)/5
+    percentage = (p_mark + c_mark + m_mark + e_mark + cs_mark)/5;
     if (percentage >= 90){
-      grade = 'A+';
-    }
-    else if (percentage >= 80){
       grade = 'A';
     }
-    else if (percentage >= 70){
-      grade = 'B+';
-    }
-    else if (percentage >= 60){
+    else if (percentage >= 80){
       grade = 'B';
     }
+    else if (percentage >= 70){
+      grade = 'C';
+    }
+    else if (percentage >= 60){
+      grade = 'D';
+    }
     else if (percentage >= 50){
-      grade = 'C+';
+      grade = 'E';
     }
     else {
-      grade = 'Fail';
+      grade = 'F';
     }
   }
 
@@ -32,7 +32,8 @@ namespace reportCard{
     cout<<"\nEnter student roll no: \n"<<endl;
     cin>>roll_no;
     cout<<"\nEnter student name : \n"<<endl;
-    cin>>name;
+    // cin>>name;
+    cin.get(name, 20);
     cout<<"\nEnter marks in physics out of 100: \n"<<endl;
     cin>>p_mark;
     cout<<"\nEnter marks in chemistry out of 100: \n"<<endl;
@@ -47,7 +48,7 @@ namespace reportCard{
 
   void student::show_data() const{
     cout<<"\nRoll number of student: "<<roll_no<<endl;
-    cout<<"\nName of student: "<<<<endl;
+    cout<<"\nName of student: "<<endl;
     cout<<name<<endl;
     cout<<"\nPhysics marks: "<<p_mark<<endl;
     cout<<"\nChemistry marks: "<<c_mark<<endl;

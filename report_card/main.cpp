@@ -1,4 +1,8 @@
-#include<"reportCard.cpp">
+#include "reportCard.hpp"
+#include<iostream>
+#include<fstream>
+#include<iomanip>
+#include<stdlib.h>
 
 using namespace std;
 using namespace reportCard;
@@ -23,7 +27,7 @@ int main(){
   char ch;
   intro();
   do{
-    system("cls");
+    system("clear");
     cout<<"\n\n\tMain menu"<<endl;
     cout<<"\n\n\t01. New student entry"<<endl;
     cout<<"\n\n\t02. Display all students entry"<<endl;
@@ -35,30 +39,31 @@ int main(){
     cout<<"\n\n\t05. Exit the system"<<endl;
     cout<<"\n\n\tSelect your option (1-5):"<<endl;
     cin>>ch;
-    system("cls");
+    system("clear");
 
-    // switch (ch){
-    //   case '1':
-    //     write_student();
-    //     break;
-    //   case '2':
-    //     display_all();
-    //     break;
-    //   case '3':
-    //     entry_menu();
-    //     break;
-    //   case '4':
-    //     class_result();
-    //     break;
-    //   case '5':
-    //     cout<<"\n\n\tThank you for using the report card system. Have a nice day"<<endl;;
-    //     break;
-    //   default:
-    //     cout<<"\a";
-    // }
+    switch (ch){
+      case '1':
+        write_student();
+        break;
+      case '2':
+        display_all();
+        break;
+      case '3':
+        entry_menu();
+        break;
+      case '4':
+        class_result();
+        break;
+      case '5':
+        cout<<"\n\n\tThank you for using the report card system. Have a nice day"<<endl;;
+        break;
+      default:
+        cout<<"\a";
+    }
     cin.ignore();
     cin.get();
-  } while(ch != '7')  //leave the application once user has pressed 7. or else keep app running
+  } while(ch != '7'); //leave the application once user has pressed 7. or else keep app running
+  return 0;
 }
 
 /**

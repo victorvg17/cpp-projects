@@ -19,6 +19,7 @@ namespace reportCard{
     void get_data();
     void show_data() const;
     void show_tabular() const;
+    void modify_report();
     int ret_roll_number() const;
   };
 } //  end namespace reportCard

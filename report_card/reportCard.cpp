@@ -46,6 +46,7 @@ namespace reportCard{
     cout<<"\nEnter marks in computer science out of 100: "<<endl;
     cin>>cs_mark;
     calculate();
+    return;
   }
 
   void student::show_data() const{
@@ -57,7 +58,24 @@ namespace reportCard{
     cout<<"\nMathematics marks: "<<m_mark<<endl;
     cout<<"\nEnglish marks: "<<e_mark<<endl;
     cout<<"\nComputer Science marks: "<<cs_mark<<endl;
+    // cout<<"\nPercentage: "<<percentage<<endl;
+    // cout<<"\nGrade: "<<grade<<endl;
 
+  }
+
+  void student::modify_report(){
+    cout<<"\nRoll number: "<<roll_no<<endl;
+    cout<<"\nEdit Physics mark: "<<endl;
+    cin>>p_mark;
+    cout<<"\nEdit Chemistry mark: "<<endl;
+    cin>>c_mark;
+    cout<<"\nEdit Mathematics mark: "<<endl;
+    cin>>m_mark;
+    cout<<"\nEdit English mark: "<<endl;
+    cin>>e_mark;
+    cout<<"\nEdit Computer Science mark: "<<endl;
+    cin>>cs_mark;
+    calculate();
   }
 
   void student::show_tabular() const{

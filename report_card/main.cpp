@@ -114,6 +114,7 @@ void entry_menu(){
   char ch;
   int roll_no;
 
+
   do {
     system("clear");
     cout<<"\n\n\t01. Display specific student entry"<<endl;
@@ -155,8 +156,28 @@ void entry_menu(){
 /**
   function for displaying student entry
 **/
-void display_sp(int roll no){
+void display_sp(int roll_no){
   ifstream inFile;
   student st;
-  
+  bool found = false;
+  inFile.open("student.dat", ios::binary);
+  if (!inFile){
+    cout<<"\n\n\tFile could not be opened. Press any key to exit"<<endl;
+    return;
+  }
+
+  cout<<"\n\n\t Student record"<<endl;
+
+  while(inFile.read(reinterpret_cast<char *> (&st), sizeof(student))){
+    if (st.ret_roll_number() == roll_no){
+      st.show_data();
+      found = true;
+      break;
+    }
+  }
+  inFile.close();
+  if (!found){
+    cout<<"\n\n\tRecord not found for the roll number. Press any key to exit"<<endl;
+  }
+  return 0;
 }

@@ -11,15 +11,19 @@ void drawLine(int n, char ch);
 
 int main(){
   rules();
-  // int guess[3];
-  int guess;
-  int no_chance = 1;
+  int guess[3];
+  // int guess;
+  int no_chance = 3;
   char playerName[10];
+
   int amount;
   int bettingAmount;
+
   int dice;
+  int dice_seed = 10;
   char choice;
-  bool game_stat = false; //WIN: true; LOSE: false;
+
+  bool game_win = false; //WIN: true; LOSE: false;
 
   srand(time(0)); //Seed ramdom generator
 
@@ -39,28 +43,41 @@ int main(){
       /* code */
       cout<<"\n\nEnter amount to bet now:"<<endl;
       cin>>bettingAmount;
-      cin.ignore();
-      cin.get();
+      // cin.ignore();
+      // cin.get();
       if (bettingAmount > amount){
         cout<<"\n\nInsufficient balance to bet the amount: "<<bettingAmount<<endl;
       }
     } while(bettingAmount > amount);
 
-    do {
+    for (int i = 0; i < no_chance; i++) {
       /* code */
-      cout<<"\n\nEnter your guess:"<<endl;
-      cin>>guess;
+      do {
+        /* code */
+        cout<<"\n\nEnter your guess "<<i+1<<": "<<endl;
+        cin>>guess[i];
 
-      if((guess < 0) || (guess > 10)){
-        cout<<"\n\nOnly number (1-10) allowed"<<endl;
+        if((guess[i] < 0) || (guess[i] > 10)){
+          cout<<"\n\nOnly number (1-10) allowed"<<endl;
+        }
+      } while((guess[i] < 0) || (guess[i] > 10));
+    }
+
+
+    dice = rand()%dice_seed + 1;
+
+    int win_itr = 0;
+    for (int i = 0; i < no_chance; i++) {
+      if (guess[i] == dice){
+        game_win = true;
+        win_itr = i+1;
+        break;
       }
-    } while((guess < 0) || (guess > 10));
+    }
 
-    dice = rand()%5 + 1;
-
-    if (guess == dice){
+    if(game_win == true){
       amount = amount + bettingAmount*10;
-      cout<<"\n\nCongrats! You won. Your updated balance: "<<amount<<endl;
+      cout<<"\n\nCongrats! You won with chance "<<win_itr<<"."<<"Your updated balance: "<<amount<<endl;
     }
     else{
       amount = amount - bettingAmount;

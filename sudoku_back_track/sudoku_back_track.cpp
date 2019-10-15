@@ -6,20 +6,22 @@ namespace SudokuSolver{
     Sudoku class used in the project
   **/
 
-  sudoku::bool findUnAssigned(int &row, int &col){
+  bool sudoku::findUnAssigned(int &row, int &col){
     // bool found = false;
     int N = 9;
     for (int row = 0; row < N; row++) {
       for (int col = 0; col < N; col++){
         if (grid[row][col] == 0){
+          //  row and col reference assigned value where grid[row][col] == unassigned.
           return true;
         }
       }
     }
+    // cout<<"\n\nNo unassigned grid found"<<endl;
     return false; //no unassigned location is available. either soln is wrong or complete.
   }
 
-  sudoku::bool usedInRow(int row, int num){
+  bool sudoku::usedInRow(int row, int num){
     int N = 9;
     for (int col = 0; col < N; col++) {
       if (grid[row][col] == num){
@@ -29,7 +31,7 @@ namespace SudokuSolver{
     return false;
   }
 
-  sudoku::bool usedInCol(int col, int num){
+  bool sudoku::usedInCol(int col, int num){
     int N = 9;
     for (int row = 0; row < N; row++) {
       if (grid[row][col] == num){
@@ -39,7 +41,7 @@ namespace SudokuSolver{
       return false;
     }
 
-  sudoku::bool usedInBox(int row, int col, int num){
+  bool sudoku::usedInBox(int row, int col, int num){
     row = row - row%3;
     col = col - col%3;
     for (int i = 0; i < 3; i++) {
@@ -52,12 +54,18 @@ namespace SudokuSolver{
     return false;
   }
 
-  sudoku::bool isSafe(int row, int col, int num){
+  bool sudoku::isSafe(int row, int col, int num){
     bool safe = !this->usedInRow(row, num) && !this->usedInCol(col, num) && !this->usedInBox(row, col, num) && (grid[row][col] == 0);
+    // bool clear = false;
+    // if (safe){
+    //     // cout<<"\n\nYo, we are good at row:  "<<row<<"col:  "<<col<<endl;
+    //     // cout<<"_"<<endl;
+    //     clear = true;
+    // }
     return safe;
   }
 
-  sudoku::bool solveSudoku(){
+  bool sudoku::solveSudoku(){
     int N = 9;
     int row;
     int col;
@@ -84,7 +92,7 @@ namespace SudokuSolver{
     return false; //we have tried (1-9) for the current level and no correct assignment found. Hence go back one level up and undo the assignment.
   }
 
-  sudoku::void printGrid(){
+  void sudoku::printGrid(){
     int N = 9;
     for (int row = 0; row < N; row++) {
       for (int col = 0; col < N; col++) {
@@ -94,9 +102,14 @@ namespace SudokuSolver{
     }
   }
 
-  void setGridInput(int grid_sudoku[9][9]){
+  void sudoku::setGridInput(int grid_sudoku[][9]){
     // N = size;
-    grid = grid_sudoku;
+    // grid = grid_sudoku;
+    for (int i = 0; i < 9; i++) {
+      for (int j = 0; j < 9; j++){
+        grid[i][j] = grid_sudoku[i][j];
+      }
+    }
   }
 
 } //end namespace SudokuSolver

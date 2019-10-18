@@ -9,8 +9,8 @@ namespace SudokuSolver{
   bool sudoku::findUnAssigned(int &row, int &col){
     // bool found = false;
     int N = 9;
-    for (int row = 0; row < N; row++) {
-      for (int col = 0; col < N; col++){
+    for (row = 0; row < N; row++) {
+      for (col = 0; col < N; col++){
         if (grid[row][col] == 0){
           //  row and col reference assigned value where grid[row][col] == unassigned.
           return true;
@@ -55,7 +55,7 @@ namespace SudokuSolver{
   }
 
   bool sudoku::isSafe(int row, int col, int num){
-    bool safe = !this->usedInRow(row, num) && !this->usedInCol(col, num) && !this->usedInBox(row, col, num) && (grid[row][col] == 0);
+    bool safe = !usedInRow(row, num) && !usedInCol(col, num) && !usedInBox(row, col, num) && (grid[row][col] == 0);
     // bool clear = false;
     // if (safe){
     //     // cout<<"\n\nYo, we are good at row:  "<<row<<"col:  "<<col<<endl;
@@ -72,17 +72,17 @@ namespace SudokuSolver{
     bool unassign = true;
     bool safe = false;
 
-    unassign = this->findUnAssigned(row, col);
+    unassign = findUnAssigned(row, col);
     if (!unassign){
       cout<<"\n\nNo unassigned grid. Complete. Exiting .."<<endl;
       return true;
     }
-    for (int num = 1; num < N+1; num++) {
-      safe = this->isSafe(row, col, num);
+    for (int num = 1; num <= N; num++) {
+      safe = isSafe(row, col, num);
       if (safe){
-        grid[col][row] = num;
+        grid[row][col] = num;
 
-        if(this->solveSudoku()){
+        if(solveSudoku()){
           return true;  //a solution is obtained recursively
         }
         //undo the assignment since the assignment was not success
